@@ -1,0 +1,242 @@
+<html>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    
+    <head>
+        <title>EGAN Demo</title>
+    </head>
+    <body>
+        <h1>EGAN: A Lightweight Vocoder with a Multi-Channeled Excitation Generator and a Linear Time-Varying Filter</h1>
+        <hr />
+        <h2>Abstract: </h2>
+        <p>In this paper, we revisited and improved our previous proposed model EGAN, a pitch controllable vocoder based on the source-filter model. The source model is a trainable channeled neural excitation generator guided by harmonic and noise inputs: F0-aligned sine-cosine harmonics plus modified velvet noise jointly modeling periodic and aperiodic components while preserving pitch control. The filter part is simply a linear time-varying filter based on STFT and windowed overlap-add (WOLA). We analyze aliasing and distortion across window types and lengths, derive practical non-aliasing criteria and window-length guidelines, and use them to set filtering hyper-parameters. The training adopts a generative adversarial network (GAN) objective based on the least-squares slicing adversarial network (LS-SAN) formulation, rather than the least-squares GAN (LS-GAN), improving convergence stability and fidelity.
+In a multi-speaker copy synthesis task on the CMU ARCTIC speech corpus, EGAN attains higher listener preference than our prior prototype. In a speaker-independent task on the LibriTTS-R speech corpus, it achieves a performance competitive with SiFiGAN while remaining compact (1.9M parameters) and capable of real-time inference on a single GPU. EGAN thus offers an interpretable, pitch-controllable alternative to purely data-driven waveform synthesizers, pairing a simple deterministic filter with a purposefully adversarially trained excitation branch.</p>
+        <hr />
+        <h2>Demo 1: CMU ARCTIC</h2>
+        <p>The table below shows the copy-synthesized waveforms generated old and new models.</p>
+
+        <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="nav-slt1" data-bs-toggle="tab" data-bs-target="#slt1">cmu_us_slt_arctic_b0377</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="nav-demo_bdl1" data-bs-toggle="tab" data-bs-target="#bdl1" >cmu_us_jmk_arctic_b0305</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="nav-demo_jmk1" data-bs-toggle="tab" data-bs-target="#jmk1">cmu_us_bdl_arctic_b0359</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="tab_content_cmu">
+            <div class="tab-pane fade show active" id="slt1">
+                <table class="table">
+                    <tr>
+                        <th>Model</th> <th>Audio File</th>
+                    </tr>
+                    <tr>
+                        <td>GT</td>
+                        <td><audio controls src="data/cmu_us_slt_arctic_b0377_gt.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>Old</td>
+                        <td><audio controls src="data/cmu_us_slt_arctic_b0377_old.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>New</td>
+                        <td><audio controls src="data/cmu_us_slt_arctic_b0377_new.wav" /></td>
+                    </tr>
+                    
+                </table>
+            </div>
+            <div class="tab-pane fade" id="bdl1">
+                <table class="table">
+                    <tr>
+                        <th>Model</th> <th>Audio File</th>
+                    </tr>
+                    <tr>
+                        <td>GT</td>
+                        <td><audio controls src="data/cmu_us_bdl_arctic_b0359_gt.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>Old</td>
+                        <td><audio controls src="data/cmu_us_bdl_arctic_b0359_old.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>New</td>
+                        <td><audio controls src="data/cmu_us_bdl_arctic_b0359_new.wav" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="jmk1">
+                <table class="table">
+                    <tr>
+                        <th>Model</th> <th>Audio File</th>
+                    </tr>
+                    <tr>
+                        <td>GT</td>
+                        <td><audio controls src="data/cmu_us_jmk_arctic_b0305_gt.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>Old</td>
+                        <td><audio controls src="data/cmu_us_jmk_arctic_b0305_old.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>New</td>
+                        <td><audio controls src="data/cmu_us_jmk_arctic_b0305_new.wav" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <br>
+        
+        <h2>Demo 2: LibriTTS-R</h2>
+        <p>In this demo we compare our model with other vocoders. The table below show the copy-synthesized waveforms. </p>
+
+        <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="nav-demo1" data-bs-toggle="tab" data-bs-target="#demo1">1089_14361_000054_000000</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="nav-demo2" data-bs-toggle="tab" data-bs-target="#demo2" >4294_32859_000006_000002</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="nav-demo3" data-bs-toggle="tab" data-bs-target="#demo3">7018_75789_000009_000010</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="nav-demo4" data-bs-toggle="tab" data-bs-target="#demo4">1998_29454_000000_000001</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="demo1">
+                <table class="table">
+                    <tr>
+                        <th> Method</th>
+                        <th> Audio File</th>
+                    </tr>
+                    <tr>
+                        <td>GT</td>
+                        <td><audio controls src="data/1089_134691_000054_000000_raw.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>EGAN</td>
+                        <td><audio controls src="data/1089_134691_000054_000000_eganv9.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>SiFiGAN</td>
+                        <td><audio controls src="data/1089_134691_000054_000000_sifigan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>BigVGAN</td>
+                        <td><audio controls src="data/1089_134691_000054_000000_bigvgan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>BigVSAN</td>
+                        <td><audio controls src="data/1089_134691_000054_000000_bigvsan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>WORLD</td>
+                        <td><audio controls src="data/1089_134691_000054_000000_world.wav" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="demo2">
+                <table class="table">
+                    <tr>
+                        <th> Method</th>
+                        <th> Audio File</th>
+                    </tr>
+                    <tr>
+                        <td>GT</td>
+                        <td><audio controls src="data/4294_32859_000006_000002_raw.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>EGAN</td>
+                        <td><audio controls src="data/4294_32859_000006_000002_eganv9.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>SiFiGAN</td>
+                        <td><audio controls src="data/4294_32859_000006_000002_sifigan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>BigVGAN</td>
+                        <td><audio controls src="data/4294_32859_000006_000002_bigvgan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>BigVSAN</td>
+                        <td><audio controls src="data/4294_32859_000006_000002_bigvsan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>WORLD</td>
+                        <td><audio controls src="data/4294_32859_000006_000002_world.wav" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="demo3">
+                <table class="table">
+                    <tr>
+                        <th> Method</th>
+                        <th> Audio File</th>
+                    </tr>
+                    <tr>
+                        <td>GT</td>
+                        <td><audio controls src="data/7018_75789_000009_000010_raw.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>EGAN</td>
+                        <td><audio controls src="data/7018_75789_000009_000010_eganv9.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>SiFiGAN</td>
+                        <td><audio controls src="data/7018_75789_000009_000010_sifigan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>BigVGAN</td>
+                        <td><audio controls src="data/7018_75789_000009_000010_bigvgan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>BigVSAN</td>
+                        <td><audio controls src="data/7018_75789_000009_000010_bigvsan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>WORLD</td>
+                        <td><audio controls src="data/7018_75789_000009_000010_world.wav" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="demo4">
+                <table class="table">
+                    <tr>
+                        <th> Method</th>
+                        <th> Audio File</th>
+                    </tr>
+                    <tr>
+                        <td>GT</td>
+                        <td><audio controls src="data/1998_29454_000000_000001_raw.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>EGAN</td>
+                        <td><audio controls src="data/1998_29454_000000_000001_eganv9.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>SiFiGAN</td>
+                        <td><audio controls src="data/1998_29454_000000_000001_sifigan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>BigVGAN</td>
+                        <td><audio controls src="data/1998_29454_000000_000001_bigvgan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>BigVSAN</td>
+                        <td><audio controls src="data/1998_29454_000000_000001_bigvsan.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>WORLD</td>
+                        <td><audio controls src="data/1998_29454_000000_000001_world.wav" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </body>
+</html>
