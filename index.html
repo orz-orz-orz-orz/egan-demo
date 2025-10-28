@@ -13,7 +13,7 @@
         <p>In this paper, we revisited and improved our previous proposed model EGAN, a pitch controllable vocoder based on the source-filter model. The source model is a trainable channeled neural excitation generator guided by harmonic and noise inputs: F0-aligned sine-cosine harmonics plus modified velvet noise jointly modeling periodic and aperiodic components while preserving pitch control. The filter part is simply a linear time-varying filter based on STFT and windowed overlap-add (WOLA). We analyze aliasing and distortion across window types and lengths, derive practical non-aliasing criteria and window-length guidelines, and use them to set filtering hyper-parameters. The training adopts a generative adversarial network (GAN) objective based on the least-squares slicing adversarial network (LS-SAN) formulation, rather than the least-squares GAN (LS-GAN), improving convergence stability and fidelity.
 In a multi-speaker copy synthesis task on the CMU ARCTIC speech corpus, EGAN attains higher listener preference than our prior prototype. In a speaker-independent task on the LibriTTS-R speech corpus, it achieves a performance competitive with SiFiGAN while remaining compact (1.9M parameters) and capable of real-time inference on a single GPU. EGAN thus offers an interpretable, pitch-controllable alternative to purely data-driven waveform synthesizers, pairing a simple deterministic filter with a purposefully adversarially trained excitation branch.</p>
         <hr />
-        <h2>Demo 1: CMU ARCTIC</h2>
+        <h2>Demo 1: CMU ARCTIC {slt, bdl, jmk}</h2>
         <p>The table below shows the copy-synthesized waveforms generated old and new models.</p>
         
         <script>
@@ -56,7 +56,7 @@ In a multi-speaker copy synthesis task on the CMU ARCTIC speech corpus, EGAN att
 
         <div id="table_cmu"></div>
 
-        <br>
+        <br />
         
         <h2>Demo 2: LibriTTS-R</h2>
         <p>In this demo we compare our model with other vocoders. The table below show the copy-synthesized waveforms. </p>
@@ -112,8 +112,86 @@ In a multi-speaker copy synthesis task on the CMU ARCTIC speech corpus, EGAN att
             <option value="7018_75789_000009_000010">7018_75789_000009_000010</option>
             <option value="1998_29454_000000_000001">1998_29454_000000_000001</option>
         </select>
-
         <div id="table_libritts"></div>
+        <br />
+
+        <h2>Demo 3: Pitch Manipulation</h2>
+        <p>In the following tables, we show the copy-synthesis audio with different pitch shift. </p>
+
+        <script>
+            function render_table_pitch(stem){
+                return  `<table class="table">
+                    <tr>
+                        <th width="100px">+semitone</th>
+                        <th>EGAN</th>
+                        <th>SiFiGAN</th>
+                        <th>WORLD</th>
+                    </tr>
+                    <tr>
+                        <td>-12</td>
+                        <td><audio controls src="data/egan/${stem}_0.50.wav" /></td>
+                        <td><audio controls src="data/sifigan/${stem}_0.50.wav" /></td>
+                        <td><audio controls src="data/world/${stem}_0.50.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>-8</td>
+                        <td><audio controls src="data/egan/${stem}_0.63.wav" /></td>
+                        <td><audio controls src="data/sifigan/${stem}_0.63.wav" /></td>
+                        <td><audio controls src="data/world/${stem}_0.63.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>-4</td>
+                        <td><audio controls src="data/egan/${stem}_0.79.wav" /></td>
+                        <td><audio controls src="data/sifigan/${stem}_0.79.wav" /></td>
+                        <td><audio controls src="data/world/${stem}_0.79.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>+0</td>
+                        <td><audio controls src="data/egan/${stem}_1.00.wav" /></td>
+                        <td><audio controls src="data/sifigan/${stem}_1.00.wav" /></td>
+                        <td><audio controls src="data/world/${stem}_1.00.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>+4</td>
+                        <td><audio controls src="data/egan/${stem}_1.26.wav" /></td>
+                        <td><audio controls src="data/sifigan/${stem}_1.26.wav" /></td>
+                        <td><audio controls src="data/world/${stem}_1.26.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>+8</td>
+                        <td><audio controls src="data/egan/${stem}_1.59.wav" /></td>
+                        <td><audio controls src="data/sifigan/${stem}_1.59.wav" /></td>
+                        <td><audio controls src="data/world/${stem}_1.59.wav" /></td>
+                    </tr>
+                    <tr>
+                        <td>+12</td>
+                        <td><audio controls src="data/egan/${stem}_2.00.wav" /></td>
+                        <td><audio controls src="data/sifigan/${stem}_2.00.wav" /></td>
+                        <td><audio controls src="data/world/${stem}_2.00.wav" /></td>
+                    </tr>
+                </table>
+                `;
+            }
+            
+            function reload_table_pitch() {
+                div = document.getElementById("table_pitch");
+                sel = document.getElementById("select_pitch");
+                console.log(sel.value);
+                console.log(render_table_pitch(sel.value))
+                div.innerHTML = render_table_pitch(sel.value);
+            }
+            window.addEventListener("load", reload_table_pitch);
+        </script>
+
+
+        <select id="select_pitch" onchange="reload_table_pitch()">
+            <option value="1089_134691_000054_000000" selected>1089_134691_000054_000000</option>
+            <option value="7105_2340_000020_000001">7105_2340_000020_000001</option>
+            <option value="7729_102255_000041_000000">7729_102255_000041_000000</option>
+            <option value="4446_2275_000047_000000">4446_2275_000047_000000</option>
+        </select>
+
+        <div id="table_pitch"></div>
     </div>
 </body>
     
